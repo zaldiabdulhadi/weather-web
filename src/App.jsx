@@ -1,5 +1,7 @@
 import axios from "axios";
+import { useRef } from "react";
 import { useState } from "react";
+import audio from "./audio/audio.mp3";
 import logo from "./images/logo.png";
 
 function App() {
@@ -9,6 +11,8 @@ function App() {
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=e299620272549d21371cc039cce719b0`;
 
+  const audioPlayer = useRef(null);
+
   const searchLocation = (event) => {
     if (event.key === "Enter") {
       try {
@@ -16,6 +20,9 @@ function App() {
           setData(res.data);
           console.log(res.data);
         });
+        setInterval(() => {
+          setWaktu(new Date().toLocaleTimeString());
+        }, 1000);
       } catch (err) {
         console.log("Error : " + err.message);
       }
@@ -23,17 +30,17 @@ function App() {
     }
   };
 
-  setInterval(() => {
-    setWaktu(new Date().toLocaleTimeString());
-  }, 1000);
-
   return (
     <div className="App">
+      <audio src={audio} autoPlay loop ref={audioPlayer}></audio>
       <img src={logo} alt="Logo" className="brand-logo" />
       <div className="search">
         <input
           type="text"
           value={location}
+          onFocus={() => {
+            audioPlayer.current.play();
+          }}
           onChange={(event) => setLocation(event.target.value)}
           placeholder="Enter Location"
           onKeyPress={searchLocation}
