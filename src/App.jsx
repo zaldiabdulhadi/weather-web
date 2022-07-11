@@ -5,6 +5,7 @@ import logo from "./images/logo.png";
 function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
+  const [waktu, setWaktu] = useState("");
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=e299620272549d21371cc039cce719b0`;
 
@@ -22,6 +23,10 @@ function App() {
     }
   };
 
+  setInterval(() => {
+    setWaktu(new Date().toLocaleTimeString());
+  }, 1000);
+
   return (
     <div className="App">
       <img src={logo} alt="Logo" className="brand-logo" />
@@ -36,6 +41,9 @@ function App() {
       </div>
       <div className="container">
         <div className="top">
+          <div className="time" style={{ marginLeft: "5px" }}>
+            {waktu}
+          </div>
           <div className="location">
             <p>{data.name}</p>
           </div>
